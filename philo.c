@@ -6,7 +6,7 @@
 /*   By: rennacir <rennacir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 18:04:01 by rennacir          #+#    #+#             */
-/*   Updated: 2023/05/30 21:00:31 by rennacir         ###   ########.fr       */
+/*   Updated: 2023/05/31 00:12:51 by rennacir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,28 +15,33 @@
 void	*routine(void* arg)
 {
 	t_philo *philo = (t_philo *)arg;
-	philo->start_time = actual_time();
+
 	if (philo->philo_id % 2)
-		my_usleep(philo->time_to_eat);
+		my_usleep(10);
+	if (philo->table->philo_num == 1)
+	{
+		pthread_mutex_lock(&philo->table->forks[philo->lfork]);
+		print_func("has taken a fork\n",actual_time() - philo->table->start_time, philo);
+		my_usleep(philo->time_to_die);
+		return (NULL);
+	}
 	while (1)
 	{
 		pthread_mutex_lock(&philo->table->forks[philo->lfork]);
-		print_func("has taken a fork\n",actual_time() - philo->start_time, philo);
+		print_func("has taken a fork\n",actual_time() - philo->table->start_time, philo);
 		pthread_mutex_lock(&philo->table->forks[philo->rfork]);
-		print_func("has taken a fork\n",actual_time() - philo->start_time, philo);
-		print_func("is eating\n", actual_time() - philo->start_time, philo);
+		print_func("has taken a fork\n",actual_time() - philo->table->start_time, philo);
+		print_func("is eating\n", actual_time() - philo->table->start_time, philo);
 		pthread_mutex_lock(&philo->meal_mutex);
 		philo->last_meal = actual_time();
-		pthread_mutex_unlock(&philo->meal_mutex);
-		my_usleep(philo->time_to_eat);
-		pthread_mutex_lock(&philo->meal_mutex);
 		philo->count_meals++;
 		pthread_mutex_unlock(&philo->meal_mutex);
+		my_usleep(philo->time_to_eat);
 		pthread_mutex_unlock(&philo->table->forks[philo->lfork]);
 		pthread_mutex_unlock(&philo->table->forks[philo->rfork]);
-		print_func("is sleeping\n",actual_time() - philo->start_time, philo);
+		print_func("is sleeping\n",actual_time() - philo->table->start_time, philo);
 		my_usleep(philo->time_to_sleep);
-		print_func("is thinking\n",actual_time() - philo->start_time, philo);
+		print_func("is thinking\n",actual_time() - philo->table->start_time, philo);
 	}
 	return 0;
 }
@@ -66,6 +71,7 @@ t_table *init_table(char **split)
 int	create_threads(t_table *table)
 {
 	int i = -1;
+	table->start_time = actual_time();
 	while(++i < table->philo_num)
 		if (pthread_mutex_init(&table->forks[i], NULL) != 0)
 			return(printf("Error: pthread_mutex_init\n"), -1);

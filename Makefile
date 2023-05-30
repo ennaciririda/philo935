@@ -6,15 +6,15 @@
 #    By: rennacir <rennacir@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/11 21:43:24 by rennacir          #+#    #+#              #
-#    Updated: 2023/05/30 16:27:52 by rennacir         ###   ########.fr        #
+#    Updated: 2023/05/31 00:07:13 by rennacir         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
 NAME = philo
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g
-# CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror
+# CFLAGS = -Wall -Wextra -Werror -
 PARS = $(addprefix parsing/, parsing.c error.c)
 TOOLS = $(addprefix tools/, ft_atoi.c ft_isdigit.c ft_split.c ft_strjoin.c \
 		actual_time.c my_usleep.c print_func.c ft_strcmp.c is_died.c \

@@ -6,7 +6,7 @@
 /*   By: rennacir <rennacir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 21:47:46 by rennacir          #+#    #+#             */
-/*   Updated: 2023/05/30 20:59:50 by rennacir         ###   ########.fr       */
+/*   Updated: 2023/05/30 23:54:26 by rennacir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ typedef struct	s_philo
 	int lfork;
 	int rfork;
 	long long last_meal;
-	long long start_time;
 	t_table *table;
 	pthread_t	thread;
 }	t_philo;
@@ -44,6 +43,7 @@ typedef struct s_table
 	int philo_num;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t print;
+	long long start_time;
 	t_philo	*philos;
 }	t_table;
 
@@ -58,7 +58,7 @@ void		check_max_min(char **split);
 int			ft_isdigit(int a);
 int			check_is_digit(char **str);
 long long	actual_time();
-void		my_usleep(long time);
+void		my_usleep(int time);
 void		print_func(char *str, long long value, t_philo *philo);
 void		is_died(t_table *table);
 void		destroy_func(t_table *table);
