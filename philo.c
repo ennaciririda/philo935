@@ -6,7 +6,7 @@
 /*   By: rennacir <rennacir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 18:04:01 by rennacir          #+#    #+#             */
-/*   Updated: 2023/05/31 15:02:48 by rennacir         ###   ########.fr       */
+/*   Updated: 2023/05/31 21:44:51 by rennacir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,39 +16,40 @@ void	*routine(void* arg)
 {
 	t_philo *philo = (t_philo *)arg;
 
-	if (philo->philo_id % 2)
-		my_usleep(5);
-	if (philo->table->philo_num == 1)
+	if (philo->philo_num == 1)
 	{
-		pthread_mutex_lock(&philo->table->forks[philo->lfork]);
-		print_f("has taken a fork\n",act_t() - philo->table->s_time, philo);
+		pthread_mutex_lock(philo->lfork);
+		print_f("has taken a fork\n",act_t() - philo->s_time, philo);
 		my_usleep(philo->time_to_die);
 		return (NULL);
 	}
+	if (philo->philo_id % 2 == 0)
+		my_usleep(5);
 	while (1)
 	{
-		pthread_mutex_lock(&philo->table->forks[philo->lfork]);
-		print_f("has taken a fork\n",act_t() - philo->table->s_time, philo);
-		pthread_mutex_lock(&philo->table->forks[philo->rfork]);
-		print_f("has taken a fork\n",act_t() - philo->table->s_time, philo);
-		print_f("is eating\n", act_t() - philo->table->s_time, philo);
+		pthread_mutex_lock(philo->lfork);
+		print_f("has taken a fork\n",act_t() - philo->s_time, philo);
+		pthread_mutex_lock(philo->rfork);
+		print_f("has taken a fork\n",act_t() - philo->s_time, philo);
+		print_f("is eating\n", act_t() - philo->s_time, philo);
 		pthread_mutex_lock(&philo->meal_mutex);
 		philo->last_meal = act_t();
 		philo->count_meals++;
 		pthread_mutex_unlock(&philo->meal_mutex);
 		my_usleep(philo->time_to_eat);
-		pthread_mutex_unlock(&philo->table->forks[philo->lfork]);
-		pthread_mutex_unlock(&philo->table->forks[philo->rfork]);
-		print_f("is sleeping\n",act_t() - philo->table->s_time, philo);
+		pthread_mutex_unlock(philo->lfork);
+		pthread_mutex_unlock(philo->rfork);
+		print_f("is sleeping\n",act_t() - philo->s_time, philo);
 		my_usleep(philo->time_to_sleep);
-		print_f("is thinking\n",act_t() - philo->table->s_time, philo);
+		print_f("is thinking\n",act_t() - philo->s_time, philo);
 	}
 	return (0);
 }
 t_table *init_table(char **split)
 {
 	t_table *table;
-	int i;
+	pthread_mutex_t	*forks;
+	int i = -1;
 
 	table = malloc(sizeof(t_table));
 	if (!table)
@@ -57,36 +58,29 @@ t_table *init_table(char **split)
 	table->philos = malloc (sizeof(t_philo) * table->philo_num);
 	if (!table->philos)
 		return (NULL);
-	table->forks = malloc (sizeof(pthread_mutex_t) * table->philo_num);
-	if (!table->forks)
+	forks = malloc (sizeof(pthread_mutex_t) * table->philo_num);
+	if (!forks)
 		return (NULL);
-	if (pthread_mutex_init(&table->print, NULL) != 0)
-			return (printf("Error: pthread_mutex_init\n"), NULL);
+	while(++i < table->philo_num)
+		if (pthread_mutex_init(&forks[i], NULL) != 0)
+			return(printf("Error: pthread_mutex_init\n"), NULL);
 	i = -1;
 	while(++i < table->philo_num)
-		init_each_philo(table->philos + i, table, split, i);
+		init_each_philo(table->philos + i, forks, split, i);
 	return (table);
 }
 
 int	create_threads(t_table *table)
 {
 	int i = -1;
-	table->s_time = act_t();
-	while(++i < table->philo_num)
-		if (pthread_mutex_init(&table->forks[i], NULL) != 0)
-			return(printf("Error: pthread_mutex_init\n"), -1);
 	i = -1;
 	while(++i < table->philo_num)
 	{
 		if (pthread_create(&table->philos[i].thread, NULL, &routine, table->philos + i) != 0)
 			return(printf("Error: pthread_create\n"), -1);
 		if (pthread_detach(table->philos[i].thread) != 0)
-			return(printf("Error: pthread_detach\n"), -1);
-	}
+			return(printf("Error: pthread_detach\n"), -1); }
 
-	i = -1;
-	while(++i < table->philo_num)
-		pthread_mutex_destroy(&table->forks[i]);
 	return (0);
 }
 

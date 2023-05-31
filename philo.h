@@ -6,7 +6,7 @@
 /*   By: rennacir <rennacir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 21:47:46 by rennacir          #+#    #+#             */
-/*   Updated: 2023/05/31 15:03:08 by rennacir         ###   ########.fr       */
+/*   Updated: 2023/05/31 21:22:08 by rennacir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,25 +25,24 @@ typedef struct s_table	t_table;
 typedef struct s_philo
 {
 	int				philo_id;
+	int				philo_num;
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				num_of_meals;
 	int				count_meals;
 	pthread_mutex_t	meal_mutex;
-	int				lfork;
-	int				rfork;
+	pthread_mutex_t			*lfork;
+	pthread_mutex_t			*rfork;
 	long long		last_meal;
-	t_table			*table;
 	pthread_t		thread;
+	long long		s_time;
+	pthread_mutex_t	print;
 }	t_philo;
 
 typedef struct s_table
 {
 	int				philo_num;
-	pthread_mutex_t	*forks;
-	pthread_mutex_t	print;
-	long long		s_time;
 	t_philo			*philos;
 }	t_table;
 
@@ -63,5 +62,5 @@ void		print_f(char *str, long long value, t_philo *philo);
 void		is_died(t_table *table);
 void		destroy_func(t_table *table);
 int			check_num_of_eat(t_table *table);
-void		init_each_philo(t_philo *philo, t_table *table, char **spl, int i);
+void		init_each_philo(t_philo *philo, pthread_mutex_t	*forks, char **spl, int i);
 #endif
