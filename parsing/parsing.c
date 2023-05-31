@@ -6,7 +6,7 @@
 /*   By: rennacir <rennacir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 21:59:32 by rennacir          #+#    #+#             */
-/*   Updated: 2023/05/30 15:04:48 by rennacir         ###   ########.fr       */
+/*   Updated: 2023/05/31 14:45:30 by rennacir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,5 +51,5 @@ int	check_is_digit(char **str)
 			j++;
 		}
 	}
-	return 0;
+	return (0);
 }

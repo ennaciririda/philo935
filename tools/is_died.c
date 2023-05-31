@@ -6,7 +6,7 @@
 /*   By: rennacir <rennacir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 18:40:30 by rennacir          #+#    #+#             */
-/*   Updated: 2023/05/30 23:57:20 by rennacir         ###   ########.fr       */
+/*   Updated: 2023/05/31 15:03:51 by rennacir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,20 +20,20 @@ void	is_died(t_table *table)
 	while (1)
 	{
 		i = -1;
-		while(++i < table->philo_num)
+		while (++i < table->philo_num)
 		{
 			pthread_mutex_lock(&table->philos[i].meal_mutex);
-			if (actual_time() - table->philos[i].last_meal >= (long long) table->philos[i].time_to_die)
+			if (act_t() - table->philos[i].last_meal
+				>= (long long) table->philos[i].time_to_die)
 			{
-				print_func("died\n",actual_time() - table->start_time, &table->philos[i]);
+				print_f("died\n", act_t()
+					- table->s_time, &table->philos[i]);
 				pthread_mutex_lock(&table->print);
-				// pthread_mutex_unlock(&table->philos[i].meal_mutex);
-				return;
+				return ;
 			}
 			pthread_mutex_unlock(&table->philos[i].meal_mutex);
-			// usleep(5);
 		}
 		if (check_num_of_eat(table))
-			return;
+			return ;
 	}
 }
