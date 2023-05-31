@@ -6,13 +6,13 @@
 /*   By: rennacir <rennacir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/28 19:09:21 by rennacir          #+#    #+#             */
-/*   Updated: 2023/05/31 21:28:54 by rennacir         ###   ########.fr       */
+/*   Updated: 2023/05/31 22:11:48 by rennacir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 
-void	init_each_philo(t_philo *philo, pthread_mutex_t	*forks, char **spl, int i)
+void	init_each_philo(t_philo *philo, pthread_mutex_t	*forks, t_table *table, char **spl, int i)
 {
 	philo->philo_id = i + 1;
 	philo->s_time = act_t();
@@ -22,6 +22,7 @@ void	init_each_philo(t_philo *philo, pthread_mutex_t	*forks, char **spl, int i)
 	philo->time_to_sleep = ft_atoi(spl[3]);
 	philo->num_of_meals = -1;
 	philo->lfork = &forks[i];
+	philo->table = table;
 	philo->rfork =  &forks[(i + 1) % ft_atoi(spl[0])];
 	if (spl[4])
 		philo->num_of_meals = ft_atoi(spl[4]);
@@ -32,7 +33,7 @@ void	init_each_philo(t_philo *philo, pthread_mutex_t	*forks, char **spl, int i)
 		printf("Error: pthread_mutex_init\n");
 		return ;
 	}
-	if (pthread_mutex_init(&philo->print, NULL) != 0)
+	if (pthread_mutex_init(&table->print, NULL) != 0)
 	{
 		printf("Error: pthread_mutex_init\n");
 		return ;

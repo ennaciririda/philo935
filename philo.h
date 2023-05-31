@@ -6,7 +6,7 @@
 /*   By: rennacir <rennacir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 21:47:46 by rennacir          #+#    #+#             */
-/*   Updated: 2023/05/31 21:22:08 by rennacir         ###   ########.fr       */
+/*   Updated: 2023/05/31 22:09:59 by rennacir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,15 @@ typedef struct s_philo
 	pthread_mutex_t			*rfork;
 	long long		last_meal;
 	pthread_t		thread;
+	t_table			*table;
 	long long		s_time;
-	pthread_mutex_t	print;
 }	t_philo;
 
 typedef struct s_table
 {
 	int				philo_num;
 	t_philo			*philos;
+	pthread_mutex_t	print;
 }	t_table;
 
 long		ft_atoi(const char *str);
@@ -62,5 +63,5 @@ void		print_f(char *str, long long value, t_philo *philo);
 void		is_died(t_table *table);
 void		destroy_func(t_table *table);
 int			check_num_of_eat(t_table *table);
-void		init_each_philo(t_philo *philo, pthread_mutex_t	*forks, char **spl, int i);
+void		init_each_philo(t_philo *philo, pthread_mutex_t	*forks,t_table *table, char **spl, int i);
 #endif
