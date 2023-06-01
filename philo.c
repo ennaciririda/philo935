@@ -6,7 +6,7 @@
 /*   By: rennacir <rennacir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 18:04:01 by rennacir          #+#    #+#             */
-/*   Updated: 2023/05/31 22:10:48 by rennacir         ###   ########.fr       */
+/*   Updated: 2023/06/01 13:49:24 by rennacir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,6 @@ void	*routine(void* arg)
 {
 	t_philo *philo = (t_philo *)arg;
 
-	if (philo->philo_num == 1)
-	{
-		pthread_mutex_lock(philo->lfork);
-		print_f("has taken a fork\n",act_t() - philo->s_time, philo);
-		my_usleep(philo->time_to_die);
-		return (NULL);
-	}
 	if (philo->philo_id % 2 == 0)
 		my_usleep(5);
 	while (1)
