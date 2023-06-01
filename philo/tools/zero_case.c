@@ -1,25 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   destroy_func.c                                     :+:      :+:    :+:   */
+/*   zero_case.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rennacir <rennacir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/27 18:24:32 by rennacir          #+#    #+#             */
-/*   Updated: 2023/05/31 22:11:25 by rennacir         ###   ########.fr       */
+/*   Created: 2023/06/01 17:10:20 by rennacir          #+#    #+#             */
+/*   Updated: 2023/06/01 17:14:52 by rennacir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 
-void	destroy_func(t_table *table)
+int	zero_case(char **split)
 {
-	int	i;
-
-	i = -1;
-	pthread_mutex_destroy(&table->print);
-	while (++i < table->philo_num)
-	{
-		pthread_mutex_destroy(&table->philos[i].meal_mutex);
-	}
+	if (ft_atoi(split[0]) <= 0)
+		return (0);
+	return (1);
 }

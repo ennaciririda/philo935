@@ -6,19 +6,18 @@
 #    By: rennacir <rennacir@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/11 21:43:24 by rennacir          #+#    #+#              #
-#    Updated: 2023/05/31 23:08:35 by rennacir         ###   ########.fr        #
+#    Updated: 2023/06/01 17:13:33 by rennacir         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
 NAME = philo
 CC = cc
-CFLAGS = -Wall -Wextra -Werror #-fsanitize=thread
-# CFLAGS = -Wall -Wextra -Werror -
+CFLAGS = -Wall -Wextra -Werror
 PARS = $(addprefix parsing/, parsing.c error.c)
 TOOLS = $(addprefix tools/, ft_atoi.c ft_isdigit.c ft_split.c ft_strjoin.c \
 		actual_time.c my_usleep.c print_func.c ft_strcmp.c is_died.c \
-		destroy_func.c check_num_of_eat.c init_each_philo.c)
+		destroy_func.c check_num_of_eat.c init_each_philo.c free_all.c zero_case.c)
 
 SRCS =  philo.c $(PARS) $(TOOLS)
 

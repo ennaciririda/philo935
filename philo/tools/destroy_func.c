@@ -1,20 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_func.c                                       :+:      :+:    :+:   */
+/*   destroy_func.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rennacir <rennacir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/24 16:40:53 by rennacir          #+#    #+#             */
-/*   Updated: 2023/05/31 22:10:14 by rennacir         ###   ########.fr       */
+/*   Created: 2023/05/27 18:24:32 by rennacir          #+#    #+#             */
+/*   Updated: 2023/06/01 15:32:52 by rennacir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 
-void	print_f(char *str, long long value, t_philo *philo)
+void	destroy_func(t_table *table)
 {
-	pthread_mutex_lock(&philo->table->print);
-	printf("%llu %d %s", value, philo->philo_id, str);
-	pthread_mutex_unlock(&philo->table->print);
+	int	i;
+
+	i = -1;
+	pthread_mutex_destroy(&table->print);
+	while (++i < table->philo_num)
+	{
+		pthread_mutex_destroy(&table->philos[i].meal_mutex);
+	}
 }
