@@ -6,7 +6,7 @@
 /*   By: rennacir <rennacir@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 18:04:01 by rennacir          #+#    #+#             */
-/*   Updated: 2023/06/01 13:49:24 by rennacir         ###   ########.fr       */
+/*   Updated: 2023/06/01 13:55:58 by rennacir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ t_table *init_table(char **split)
 	table = malloc(sizeof(t_table));
 	if (!table)
 		return (0);
+	table->split = split;
 	table->philo_num = ft_atoi(split[0]);
 	table->philos = malloc (sizeof(t_philo) * table->philo_num);
 	if (!table->philos)
@@ -61,7 +62,7 @@ t_table *init_table(char **split)
 			return(printf("Error: pthread_mutex_init\n"), NULL);
 	i = -1;
 	while(++i < table->philo_num)
-		init_each_philo(table->philos + i, forks, table, split, i);
+		init_each_philo(table->philos + i, forks, table, i);
 	return (table);
 }
 
